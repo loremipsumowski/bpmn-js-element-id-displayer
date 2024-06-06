@@ -1,6 +1,6 @@
 import newDiagramXML from './newDiagram.bpmn';
 
-import LabelSwitcherModule from '..';
+import ElementIdDisplayer from '..';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
@@ -8,7 +8,7 @@ const canvas = document.querySelector('#canvas');
 const modeler = new BpmnModeler({
   container: canvas,
   additionalModules: [
-    LabelSwitcherModule,
+    ElementIdDisplayer,
   ],
   keyboard: {
     bindTo: document
