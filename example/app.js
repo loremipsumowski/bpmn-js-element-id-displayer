@@ -14,7 +14,7 @@ const modeler = new BpmnModeler({
     bindTo: document
   }
 });
-console.log(modeler);
+
 modeler.importXML(newDiagramXML).then(result => {
 
   const {
