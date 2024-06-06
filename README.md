@@ -2,7 +2,7 @@
 
 A plugin for BPMN diagrams that displays element IDs directly on the diagram. This plugin is essential for debugging and understanding complex BPMN workflows, allowing you to easily visualize and identify each element by its unique ID.
 
-![Sample](./resources/sample.png)
+![Sample](https://raw.githubusercontent.com/loremipsumowski/bpmn-js-element-id-displayer/main/resources/sample.png)
 
 ## Features
 
