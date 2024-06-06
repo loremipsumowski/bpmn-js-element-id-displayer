@@ -4,7 +4,6 @@ import { append as svgAppend, create as svgCreate } from 'tiny-svg';
 
 const HIGH_PRIORITY = 1500;
 
-
 const elementCategories = [
   { type: 'tasks', label: 'Tasks' },
   { type: 'events', label: 'Events' },
@@ -39,7 +38,7 @@ function categorizeBpmnElement(elementType) {
   case 'bpmn:EventBasedGateway': {
     return elementCategories[2];
   }
-  case 'bpmn:SequenceFlow':{
+  case 'bpmn:SequenceFlow': {
     return elementCategories[3];
   }
   case 'bpmn:DataObjectReference':
@@ -58,13 +57,14 @@ export default class ElementIdDisplayer extends BaseRenderer {
   constructor(eventBus, canvas, bpmnRenderer, textRenderer) {
     super(eventBus, HIGH_PRIORITY);
     this.canvas = canvas;
+    this.eventBus = eventBus;
     this.bpmnRenderer = bpmnRenderer;
     this.textRenderer = textRenderer;
     this.showIds = false;
     this.elementTypesToShow = new Set();
 
     this._loadSettingsFromLocalStorage();
-    this._addToggleControl(eventBus);
+    this._init();
   }
 
   canRender(element) {
@@ -124,7 +124,19 @@ export default class ElementIdDisplayer extends BaseRenderer {
     return mid;
   }
 
-  _addToggleControl(eventBus) {
+  _init() {
+    const canvas = this.canvas,
+          container = canvas.getContainer();
+
+    const parent = this._parent = document.createElement('div');
+    parent.className = 'djs-element-id-displayer';
+
+    container.appendChild(parent);
+
+    this._addToggleControl(parent);
+  }
+
+  _addToggleControl(parent) {
     const container = document.createElement('div');
     container.id = 'toggle-container';
     container.style.position = 'absolute';
@@ -161,7 +173,6 @@ export default class ElementIdDisplayer extends BaseRenderer {
     additionalControlsContainer.style.marginTop = '10px';
     additionalControlsContainer.style.display = this.showIds ? 'flex' : 'none';
 
-
     elementCategories.forEach(category => {
       const categoryCheckbox = document.createElement('input');
       categoryCheckbox.type = 'checkbox';
@@ -179,7 +190,7 @@ export default class ElementIdDisplayer extends BaseRenderer {
           this.elementTypesToShow.delete(category.type);
         }
         this._saveSettingsToLocalStorage();
-        this._updateDiagram(eventBus);
+        this._updateDiagram();
       });
 
       additionalControlsContainer.appendChild(this._createCheckboxLabelPair(categoryCheckbox, categoryLabel));
@@ -187,13 +198,13 @@ export default class ElementIdDisplayer extends BaseRenderer {
 
     container.appendChild(additionalControlsContainer);
 
-    document.body.appendChild(container);
+    parent.appendChild(container);
 
     showIdsCheckbox.addEventListener('change', () => {
       this.showIds = showIdsCheckbox.checked;
       additionalControlsContainer.style.display = this.showIds ? 'flex' : 'none';
       this._saveSettingsToLocalStorage();
-      this._updateDiagram(eventBus);
+      this._updateDiagram();
     });
 
     container.addEventListener('mouseenter', () => {
@@ -222,9 +233,9 @@ export default class ElementIdDisplayer extends BaseRenderer {
     return this.elementTypesToShow.has(category.type);
   }
 
-  _updateDiagram(eventBus) {
+  _updateDiagram() {
     const allElements = this._getAllElements();
-    eventBus.fire('elements.changed', { elements: allElements });
+    this.eventBus.fire('elements.changed', { elements: allElements });
   }
 
   _getAllElements() {

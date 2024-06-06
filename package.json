@@ -1,6 +1,6 @@
 {
   "name": "bpmn-js-element-id-displayer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin to display element IDs in BPMN diagrams.",
   "main": "./src/index.js",
   "scripts": {
