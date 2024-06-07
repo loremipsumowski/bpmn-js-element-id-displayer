@@ -10,6 +10,11 @@ A plugin for BPMN diagrams that displays element IDs directly on the diagram. Th
 - **Customizable**: Easily toggle which types of elements should display their IDs.
 - **Seamless Integration**: Works with BPMN-js out of the box.
 - **Development and Production Builds**: Optimized builds for both development and production environments.
+- **Persistent Settings**: User preferences for displaying IDs are saved in localStorage, ensuring settings persist across sessions.
+
+## Demo
+
+You can see a live demo of this project [here](https://loremipsumowski.github.io/bpmn-js-element-id-displayer/).
 
 ## Usage
 
